@@ -36,5 +36,5 @@ This function compresses log files older than the current month to Zip archives 
 ### Get-RebootTime
 Function to retrieve the latest reboot time(s) of a computer. For details see the script version web page: [Retrieve latest reboot time(s)](https://gallery.technet.microsoft.com/Retrieve-latest-reboot-97ab5270).
 ## Versions
-### 0.0.0, 2019-05-13
+### 0.0.1, 2019-05-13
 Test release
