@@ -3,7 +3,7 @@
 The module SysAdminsFriends provides some tools that are useful for system administrators.
 .NOTES
 Version: 0.0.0
-Date: 2019-05-12
+Date: 2019-05-13
 Author: Markus Scholtes
 #>
 
