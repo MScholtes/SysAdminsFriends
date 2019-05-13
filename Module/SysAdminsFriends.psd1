@@ -117,7 +117,7 @@ PrivateData = @{
 
 		PSData = @{
 				# Tags applied to this module. These help with module discovery in online galleries.
-				Tags = @('Windows', 'Operations', 'Administration', 'Logs', 'Batch', 'Firewall', 'Sessions', 'Reboot', 'Replace', 'Join', 'Split', 'Web server')
+				Tags = @('Windows', 'Operations', 'Administration', 'Logs', 'Batch', 'Firewall', 'Sessions', 'Reboot', 'Replace', 'Join', 'Split', 'Webserver')
 
 				# A URL to the license for this module.
 				# LicenseUri = 'https://github.com/MScholtes/SysAdminsFriends/blob/master/LICENSE'
