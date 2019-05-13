@@ -12,7 +12,7 @@
 RootModule = 'SysAdminsFriends.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.0'
+ModuleVersion = '0.0.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -130,7 +130,7 @@ PrivateData = @{
 
 				# ReleaseNotes of this module
 				ReleaseNotes = @'
-# 0.0.0 / 2019-05-13
+# 0.0.1 / 2019-05-13
  - Test release
 '@
 		} # End of PSData hashtable
