@@ -3,7 +3,7 @@
 Generate cmd.exe batch files from short Powershell scripts
 .Description
 Generate cmd.exe batch files from short Powershell scripts
-The Powershell scripts are Base64 encoded and handed to a new Poershell instance in the batch file.
+The Powershell scripts are Base64 encoded and handed to a new Powershell instance in the batch file.
 If special characters like umlauts are used in the script it has to be UTF8 encoded to preserve the special characters.
 The following restrictions apply to the generated batch files:
 - the script may have a maximum of 2975 characters (because of Unicode and Base64 encoding and the maximum parameter length of 8192 characters in cmd.exe)
