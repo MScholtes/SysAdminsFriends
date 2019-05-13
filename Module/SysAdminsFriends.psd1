@@ -120,10 +120,10 @@ PrivateData = @{
 				Tags = @('Windows', 'Operations', 'Administration', 'Logs', 'Batch', 'Firewall', 'Sessions', 'Reboot', 'Replace', 'Join', 'Split', 'Webserver')
 
 				# A URL to the license for this module.
-				# LicenseUri = 'https://github.com/MScholtes/SysAdminsFriends/blob/master/LICENSE'
+				LicenseUri = 'https://github.com/MScholtes/SysAdminsFriends/blob/master/LICENSE'
 
 				# A URL to the main website for this project.
-				# ProjectUri = 'https://github.com/MScholtes/SysAdminsFriends'
+				ProjectUri = 'https://github.com/MScholtes/SysAdminsFriends'
 
 				# A URL to an icon representing this module.
 				# IconUri = ''
