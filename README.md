@@ -16,7 +16,7 @@ By Markus Scholtes, 2019
 ```powershell
 PS C:\> Install-Module SysAdminsFriends
 ```
-(on Powershell V4 you may have to install PowershellGet before)
+(on Powershell V4 you may have to install PowershellGet before) or download from here: https://www.powershellgallery.com/packages/SysAdminsFriends/.
 
 ## Functions
 ### Export-FirewallRules, Import-FirewallRules and Remove-FirewallRules
