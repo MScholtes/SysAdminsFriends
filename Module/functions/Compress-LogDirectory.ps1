@@ -123,7 +123,7 @@ function Compress-LogDirectory
 		}
 		catch { # cannot load IIS module
 			Write-Error "Cannot load IIS Powershell module, are IIS and administrative rights present?"
-			exit
+			return
 		}
 
 		ForEach ($WEBSITE in (Get-Website))
