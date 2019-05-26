@@ -8,6 +8,7 @@ SysAdminsFriends is a Powershell module that provides some tools that are useful
 * Split-File and Join-File split and join binary files fast
 * Set-InFile replaces text in files with preserving the encoding
 * Compress-LogDirectory archives log files in a given path or all iis log directories
+* Invoke-AdminExplorer starts an administrative Explorer window
 * Get-RebootTime gets the last reboot time(s) fast
 
 By Markus Scholtes, 2019
@@ -33,8 +34,12 @@ Generate cmd.exe batch files from short Powershell scripts. The Powershell scrip
 Function to replace text in files programmatically without getting a mess with the text encodings. The function detects the encoding of each processed file and writes it back with the same encoding. I had to rename the function from Replace-InFile to Set-InFile, because unfortunately there is no suitable powershell verb for exchange operations. For details see the script version web page: [Replace-InFile.ps1: Replace text in files while preserving the encoding](https://gallery.technet.microsoft.com/Replace-InFileps1-Replace-1e0be31a).
 ### Compress-LogDirectory
 This function compresses log files older than the current month to Zip archives in a given directory or in the IIS log directories and deletes the archived files. For details see the script version web page: [Powershell script to compress log files (and IIS logs)](https://gallery.technet.microsoft.com/Powershell-script-to-47f83931).
+### Invoke-AdminExplorer
+Starts an administrative "File Open" dialog as a replacement for an elevated Windows Explorer that does not exists since Windows Vista. For details see the script version web page: ["File Open" Dialog As Replacement for An Adminstrative Windows Explorer](https://gallery.technet.microsoft.com/scriptcenter/File-Open-Dialog-As-51b7854b).
+### Test-Admin
+Checks if the current Powershell runs in administrative mode (means is elevated if UAC is enabled). For details see the script version web page: ["File Open" Dialog As Replacement for An Adminstrative Windows Explorer](https://gallery.technet.microsoft.com/scriptcenter/File-Open-Dialog-As-51b7854b).
 ### Get-RebootTime
 Function to retrieve the latest reboot time(s) of a computer. For details see the script version web page: [Retrieve latest reboot time(s)](https://gallery.technet.microsoft.com/Retrieve-latest-reboot-97ab5270).
 ## Versions
-### 0.0.1, 2019-05-13
-Test release
+### 1.0.0, 2019-05-20
+First stable release (hope so)
