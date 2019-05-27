@@ -31,7 +31,6 @@ Copyright = '(c) Markus Scholtes 2019'
 # Description of the functionality provided by this module
 Description = @'
 SysAdminsFriends is a module that provides some tools that are useful for system administrators.
-
 * Export-FirewallRules, Import-FirewallRules, Remove-FirewallRules for firewall rules
 * Get-Sessions retrieves information on logon sessions
 * Start-Webserver is a Powershell web server without IIS
