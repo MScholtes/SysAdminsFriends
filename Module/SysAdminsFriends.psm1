@@ -2,8 +2,8 @@
 .SYNOPSIS
 The module SysAdminsFriends provides some tools that are useful for system administrators.
 .NOTES
-Version: 1.0.0
-Date: 2019-05-20
+Version: 1.1.0
+Date: 2019-08-30
 Author: Markus Scholtes
 #>
 
@@ -31,7 +31,7 @@ if (Get-Command Test-FileCatalog -EA SilentlyContinue)
 . "$PSScriptRoot/functions/Import-FirewallRules.ps1"
 . "$PSScriptRoot/functions/Invoke-AdminExplorer.ps1"
 . "$PSScriptRoot/functions/Remove-FirewallRules.ps1"
-. "$PSScriptRoot/functions/Set-InFile.ps1"
+. "$PSScriptRoot/functions/Replace-InFile.ps1"
 . "$PSScriptRoot/functions/Split-File.ps1"
 . "$PSScriptRoot/functions/Start-WebServer.ps1"
 
@@ -44,7 +44,7 @@ Export-ModuleMember -Function @(
 	'Remove-FirewallRules',
 	'Get-RebootTime',
 	'Get-Sessions',
-	'Set-InFile',
+	'Replace-InFile',
 	'Split-File',
 	'Join-File',
 	'Invoke-AdminExplorer',
