@@ -18,7 +18,7 @@ After stopping the webserver you should remove the rule, e.g.:
 .Parameter BINDING
 Binding of the webserver
 .Parameter BASEDIR
-Base directory for static content (default: the script's directory)
+Base directory for static content (default: current directory)
 .Inputs
 None
 .Outputs
@@ -42,7 +42,7 @@ Delete the webserver task with
 	schtasks.exe /Delete /TN "Powershell Webserver"
 Scheduled tasks are running with low priority per default, so some functions might be slow.
 .Notes
-Version 1.1, 2017-11-23
+Version 1.2, 2019-08-26
 Author: Markus Scholtes
 #>
 function Start-Webserver
@@ -56,22 +56,19 @@ function Start-Webserver
 	# $BINDING = 'http://+:8080/'
 
 	if ($BASEDIR -eq "")
-	{	# retrieve script path as base path for static content
-		if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript")
-		{ $BASEDIR = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition }
-		else # compiled with PS2EXE:
-		{ $BASEDIR = Split-Path -Parent -Path ([Environment]::GetCommandLineArgs()[0]) }
+	{	# current filesystem path as base path for static content
+		$BASEDIR = (Get-Location -PSProvider "FileSystem").ToString()
 	}
 	# convert to absolute path
 	$BASEDIR = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($BASEDIR)
 
 	# MIME hash table for static content
-	$MIMEHASH = @{".avi"="video/x-msvideo"; ".crt"="application/x-x509-ca-cert"; ".css"="text/css"; ".der"="application/x-x509-ca-cert"; ".flv"="video/x-flv"; ".gif"="image/gif"; ".htm"="text/html"; ".html"="text/html"; ".ico"="image/x-icon"; ".jar"="application/java-archive"; ".jardiff"="application/x-java-archive-diff"; ".jpeg"="image/jpeg"; ".jpg"="image/jpeg"; ".js"="application/x-javascript"; ".mov"="video/quicktime"; ".mp3"="audio/mpeg"; ".mpeg"="video/mpeg"; ".mpg"="video/mpeg"; ".pdf"="application/pdf"; ".pem"="application/x-x509-ca-cert"; ".pl"="application/x-perl"; ".png"="image/png"; ".rss"="text/xml"; ".shtml"="text/html"; ".swf"="application/x-shockwave-flash"; ".txt"="text/plain"; ".war"="application/java-archive"; ".wmv"="video/x-ms-wmv"; ".xml"="text/xml"}
+	$MIMEHASH = @{".avi"="video/x-msvideo"; ".crt"="application/x-x509-ca-cert"; ".css"="text/css"; ".der"="application/x-x509-ca-cert"; ".flv"="video/x-flv"; ".gif"="image/gif"; ".htm"="text/html"; ".html"="text/html"; ".ico"="image/x-icon"; ".jar"="application/java-archive"; ".jardiff"="application/x-java-archive-diff"; ".jpeg"="image/jpeg"; ".jpg"="image/jpeg"; ".js"="application/x-javascript"; ".mov"="video/quicktime"; ".mp3"="audio/mpeg"; ".mp4"="video/mp4"; ".mpeg"="video/mpeg"; ".mpg"="video/mpeg"; ".pdf"="application/pdf"; ".pem"="application/x-x509-ca-cert"; ".pl"="application/x-perl"; ".png"="image/png"; ".rss"="text/xml"; ".shtml"="text/html"; ".txt"="text/plain"; ".war"="application/java-archive"; ".wmv"="video/x-ms-wmv"; ".xml"="text/xml"}
 
 	# HTML answer templates for specific calls, placeholders !RESULT, !FORMFIELD, !PROMPT are allowed
 	$HTMLRESPONSECONTENTS = @{
 		'GET /'  =  @"
-<html><body>
+<!doctype html><html><body>
 	!HEADERLINE
 	<pre>!RESULT</pre>
 	<form method="GET" action="/">
@@ -81,7 +78,7 @@ function Start-Webserver
 </body></html>
 "@
 		'GET /script'  =  @"
-<html><body>
+<!doctype html><html><body>
 	!HEADERLINE
 	<form method="POST" enctype="multipart/form-data" action="/script">
 	<p><b>Script to execute:</b><input type="file" name="filedata"></p>
@@ -91,7 +88,7 @@ function Start-Webserver
 </body></html>
 "@
 		'GET /download'  =  @"
-<html><body>
+<!doctype html><html><body>
 	!HEADERLINE
 	<pre>!RESULT</pre>
 	<form method="POST" action="/download">
@@ -101,7 +98,7 @@ function Start-Webserver
 </body></html>
 "@
 		'POST /download'  =  @"
-<html><body>
+<!doctype html><html><body>
 	!HEADERLINE
 	<pre>!RESULT</pre>
 	<form method="POST" action="/download">
@@ -111,7 +108,7 @@ function Start-Webserver
 </body></html>
 "@
 		'GET /upload'  =  @"
-<html><body>
+<!doctype html><html><body>
 	!HEADERLINE
 	<form method="POST" enctype="multipart/form-data" action="/upload">
 	<p><b>File to upload:</b><input type="file" name="filedata"></p>
@@ -120,14 +117,14 @@ function Start-Webserver
 	</form>
 </body></html>
 "@
-		'POST /script' = "<html><body>!HEADERLINE<pre>!RESULT</pre></body></html>"
-		'POST /upload' = "<html><body>!HEADERLINE<pre>!RESULT</pre></body></html>"
-		'GET /exit' = "<html><body>Stopped powershell webserver</body></html>"
-		'GET /quit' = "<html><body>Stopped powershell webserver</body></html>"
-		'GET /log' = "<html><body>!HEADERLINELog of powershell webserver:<br /><pre>!RESULT</pre></body></html>"
-		'GET /starttime' = "<html><body>!HEADERLINEPowershell webserver started at $(Get-Date -Format s)</body></html>"
-		'GET /time' = "<html><body>!HEADERLINECurrent time: !RESULT</body></html>"
-		'GET /beep' = "<html><body>!HEADERLINEBEEP...</body></html>"
+		'POST /script' = "<!doctype html><html><body>!HEADERLINE<pre>!RESULT</pre></body></html>"
+		'POST /upload' = "<!doctype html><html><body>!HEADERLINE<pre>!RESULT</pre></body></html>"
+		'GET /exit' = "<!doctype html><html><body>Stopped powershell webserver</body></html>"
+		'GET /quit' = "<!doctype html><html><body>Stopped powershell webserver</body></html>"
+		'GET /log' = "<!doctype html><html><body>!HEADERLINELog of powershell webserver:<br /><pre>!RESULT</pre></body></html>"
+		'GET /starttime' = "<!doctype html><html><body>!HEADERLINEPowershell webserver started at $(Get-Date -Format s)</body></html>"
+		'GET /time' = "<!doctype html><html><body>!HEADERLINECurrent time: !RESULT</body></html>"
+		'GET /beep' = "<!doctype html><html><body>!HEADERLINEBEEP...</body></html>"
 	}
 
 	# Set navigation header line for all web pages
@@ -357,7 +354,7 @@ function Start-Webserver
 								$FILENAME = Split-Path -Leaf $FORMFIELD
 								$RESPONSE.AddHeader("Content-Disposition", "attachment; filename=$FILENAME")
 								$RESPONSE.AddHeader("Last-Modified", [IO.File]::GetLastWriteTime($FORMFIELD).ToString('r'))
-								$RESPONSE.AddHeader("Server", "Powershell Webserver/1.1 on ")
+								$RESPONSE.AddHeader("Server", "Powershell Webserver/1.2 on ")
 								$RESPONSE.OutputStream.Write($BUFFER, 0, $BUFFER.Length)
 								# mark response as already given
 								$RESPONSEWRITTEN = $TRUE
@@ -569,6 +566,28 @@ function Start-Webserver
 							}
 							$CHECKFILE = ""
 						}
+						if ($CHECKFILE -eq "")
+						{ # generate directory listing
+							$HTMLRESPONSE = "<!doctype html><html><head><title>$($REQUEST.Url.LocalPath)</title><meta charset=""utf-8""></head><body><H1>$($REQUEST.Url.LocalPath)</H1><hr><pre>"
+							if ($REQUEST.Url.LocalPath -ne "" -And $REQUEST.Url.LocalPath -ne "/" -And $REQUEST.Url.LocalPath -ne "`\"  -And $REQUEST.Url.LocalPath -ne ".")
+							{ # link to parent directory
+								$PARENTDIR = (Split-Path $REQUEST.Url.LocalPath -Parent) -replace '\\','/'
+								if ($PARENTDIR.IndexOf("/") -ne 0) { $PARENTDIR = "/" + $PARENTDIR }
+								$HTMLRESPONSE += "<pre><a href=""$PARENTDIR"">[To Parent Directory]</a><br><br>"
+							}
+
+							# read in directory listing
+							$ENTRIES = Get-ChildItem -EA SilentlyContinue -Path $CHECKDIR
+
+							# process directories
+							$ENTRIES | Where-Object { $_.PSIsContainer } | ForEach-Object { $HTMLRESPONSE += "$($_.LastWriteTime.ToString())       &lt;dir&gt; <a href=""$(Join-Path $REQUEST.Url.LocalPath $_.Name)"">$($_.Name)</a><br>" }
+
+							# process files
+							$ENTRIES | Where-Object { !$_.PSIsContainer } | ForEach-Object { $HTMLRESPONSE += "$($_.LastWriteTime.ToString())  $("{0,10}" -f $_.Length) <a href=""$(Join-Path $REQUEST.Url.LocalPath $_.Name)"">$($_.Name)</a><br>" }
+
+							# end of directory listing
+							$HTMLRESPONSE += "</pre><hr></body></html>"
+						}
 					}
 					else
 						{ # no directory, check for file
@@ -597,7 +616,7 @@ function Start-Webserver
 								$RESPONSE.AddHeader("Content-Disposition", "attachment; filename=$FILENAME")
 							}
 							$RESPONSE.AddHeader("Last-Modified", [IO.File]::GetLastWriteTime($CHECKFILE).ToString('r'))
-							$RESPONSE.AddHeader("Server", "Powershell Webserver/1.1 on ")
+							$RESPONSE.AddHeader("Server", "Powershell Webserver/1.2 on ")
 							$RESPONSE.OutputStream.Write($BUFFER, 0, $BUFFER.Length)
 							# mark response as already given
 							$RESPONSEWRITTEN = $TRUE
@@ -615,8 +634,11 @@ function Start-Webserver
 					}
 					else
 					{	# no file to serve found, return error
-						$RESPONSE.StatusCode = 404
-						$HTMLRESPONSE = '<html><body>Page not found</body></html>'
+						if (!(Test-Path $CHECKDIR -PathType Container))
+						{
+							$RESPONSE.StatusCode = 404
+							$HTMLRESPONSE = '<!doctype html><html><body>Page not found</body></html>'
+						}
 					}
 				}
 
@@ -635,7 +657,7 @@ function Start-Webserver
 				$BUFFER = [Text.Encoding]::UTF8.GetBytes($HTMLRESPONSE)
 				$RESPONSE.ContentLength64 = $BUFFER.Length
 				$RESPONSE.AddHeader("Last-Modified", [DATETIME]::Now.ToString('r'))
-				$RESPONSE.AddHeader("Server", "Powershell Webserver/1.1 on ")
+				$RESPONSE.AddHeader("Server", "Powershell Webserver/1.2 on ")
 				$RESPONSE.OutputStream.Write($BUFFER, 0, $BUFFER.Length)
 			}
 
