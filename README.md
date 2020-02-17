@@ -11,7 +11,7 @@ SysAdminsFriends is a Powershell module that provides some tools that are useful
 * Invoke-AdminExplorer starts an administrative Explorer window
 * Get-RebootTime gets the last reboot time(s) fast
 
-By Markus Scholtes, 2019
+By Markus Scholtes, 2020
 ## Installation
 
 ```powershell
@@ -41,6 +41,8 @@ Checks if the current Powershell runs in administrative mode (means is elevated 
 ### Get-RebootTime
 Function to retrieve the latest reboot time(s) of a computer. For details see the script version web page: [Retrieve latest reboot time(s)](https://gallery.technet.microsoft.com/Retrieve-latest-reboot-97ab5270).
 ## Versions
+### 1.1.1, 2020-02-15
+Added filtering options to Export-FirewallRules.ps1
 ### 1.1.0, 2019-08-30
 Renamed Set-InFile to Replace-InFile
 Added directory listing feature to Start-WebServer
