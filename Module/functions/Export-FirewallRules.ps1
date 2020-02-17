@@ -4,26 +4,43 @@ Exports firewall rules to a CSV or JSON file.
 .DESCRIPTION
 Exports firewall rules to a CSV or JSON file. Local and policy based rules will be given out.
 CSV files are semicolon separated (Beware! Excel is not friendly to CSV files).
+All rules are exported by default, you can filter with parameter -Name, -Inbound, -Outbound,
+-Enabled, -Disabled, -Allow and -Block.
 .PARAMETER Name
 Display name of the rules to be processed. Wildcard character * is allowed.
 .PARAMETER CSVFile
 Output file
 .PARAMETER JSON
 Output in JSON instead of CSV format
+.PARAMETER Inbound
+Export inbound rules
+.PARAMETER Outbound
+Export outbound rules
+.PARAMETER Enabled
+Export enabled rules
+.PARAMETER Disabled
+Export disabled rules
+.PARAMETER Allow
+Export allowing rules
+.PARAMETER Block
+Export blocking rules
 .NOTES
 Author: Markus Scholtes
-Version: 1.01
-Build date: 2018/03/27
+Version: 1.02
+Build date: 2020/02/15
 .EXAMPLE
 Export-FirewallRules
 Exports all firewall rules to the CSV file FirewallRules.csv in the current directory.
+.EXAMPLE
+Export-FirewallRules -Inbound -Allow
+Exports all inbound and allowing firewall rules to the CSV file FirewallRules.csv in the current directory.
 .EXAMPLE
 Export-FirewallRules snmp* SNMPRules.json -json
 Exports all SNMP firewall rules to the JSON file SNMPRules.json.
 #>
 function Export-FirewallRules
 {
-	Param($Name = "*", $CSVFile = ".\FirewallRules.csv", [SWITCH]$JSON)
+	Param($Name = "*", $CSVFile = ".\FirewallRules.csv", [SWITCH]$JSON, [SWITCH]$Inbound, [SWITCH]$Outbound, [SWITCH]$Enabled, [SWITCH]$Disabled, [SWITCH]$Block, [SWITCH]$Allow)
 
 	#Requires -Version 4.0
 
@@ -46,9 +63,25 @@ function Export-FirewallRules
 		}
 	}
 
+	# Filter rules?
+	# Filter by direction
+	$Direction = "*"
+	if ($Inbound -And !$Outbound) { $Direction = "Inbound" }
+	if (!$Inbound -And $Outbound) { $Direction = "Outbound" }
+
+	# Filter by state
+	$RuleState = "*"
+	if ($Enabled -And !$Disabled) { $RuleState = "True" }
+	if (!$Enabled -And $Disabled) { $RuleState = "False" }
+
+	# Filter by action
+	$Action = "*"
+	if ($Allow -And !$Block) { $Action  = "Allow" }
+	if (!$Allow -And $Block) { $Action  = "Block" }
+
 
 	# read firewall rules
-	$FirewallRules = Get-NetFirewallRule -DisplayName $Name -PolicyStore "ActiveStore"
+	$FirewallRules = Get-NetFirewallRule -DisplayName $Name -PolicyStore "ActiveStore" | Where-Object { $_.Direction -like $Direction -and $_.Enabled -like $RuleState -And $_.Action -like $Action }
 
 	# start array of rules
 	$FirewallRuleSet = @()

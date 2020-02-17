@@ -10,8 +10,8 @@ Input file
 Input in JSON instead of CSV format
 .NOTES
 Author: Markus Scholtes
-Version: 1.01
-Build date: 2018/03/28
+Version: 1.02
+Build date: 2020/02/15
 .EXAMPLE
 Import-FirewallRules
 Imports all firewall rules in the CSV file FirewallRules.csv in the current directory.

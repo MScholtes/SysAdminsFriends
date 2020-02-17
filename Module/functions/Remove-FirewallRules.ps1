@@ -12,8 +12,8 @@ Input file
 Input in JSON instead of CSV format
 .NOTES
 Author: Markus Scholtes
-Version: 1.01
-Build date: 2018/03/27
+Version: 1.02
+Build date: 2020/02/15
 .EXAMPLE
 Remove-FirewallRules
 Removes all firewall rules according to a list in the CSV file FirewallRules.csv in the current directory.
