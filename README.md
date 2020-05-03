@@ -47,6 +47,7 @@ Split-File can chunk into parts of size > 2GB now
 Added filtering options to Export-FirewallRules.ps1
 ### 1.1.0, 2019-08-30
 Renamed Set-InFile to Replace-InFile
+
 Added directory listing feature to Start-WebServer
 ### 1.0.0, 2019-05-20
 First stable release (hope so)
