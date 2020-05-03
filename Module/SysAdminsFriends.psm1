@@ -2,8 +2,8 @@
 .SYNOPSIS
 The module SysAdminsFriends provides some tools that are useful for system administrators.
 .NOTES
-Version: 1.1.1
-Date: 2020-02-15
+Version: 1.1.2
+Date: 2020-05-03
 Author: Markus Scholtes
 #>
 
