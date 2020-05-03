@@ -41,6 +41,8 @@ Checks if the current Powershell runs in administrative mode (means is elevated 
 ### Get-RebootTime
 Function to retrieve the latest reboot time(s) of a computer. For details see the script version web page: [Retrieve latest reboot time(s)](https://gallery.technet.microsoft.com/Retrieve-latest-reboot-97ab5270).
 ## Versions
+### 1.1.2, 2020-05-03
+Split-File can chunk into parts of size > 2GB now
 ### 1.1.1, 2020-02-15
 Added filtering options to Export-FirewallRules.ps1
 ### 1.1.0, 2019-08-30
