@@ -6,6 +6,7 @@ SysAdminsFriends is a Powershell module that provides some tools that are useful
 * Start-Webserver is a Powershell web server without IIS
 * ConvertTo-Batch converts short Powershell scripts to cmd batches (that ignore the execution policy)
 * Split-File and Join-File split and join binary files fast
+* Export-FileSegment and Import-FileSegment extract and insert binary data
 * Replace-InFile replaces text in files with preserving the encoding
 * Compress-LogDirectory archives log files in a given path or all iis log directories
 * Invoke-AdminExplorer starts an administrative Explorer window
@@ -26,6 +27,8 @@ Functions for exporting, importing and removing of firewall rules with CSV or JS
 Powershell function that starts a webserver (without IIS). Powershell command execution, script execution, upload, download and other functions are implemented. For details see the script version web page: [Powershell Webserver](https://gallery.technet.microsoft.com/Powershell-Webserver-74dcf466).
 ### Split-File and Join-File
 Two Powershell functions to split and join binary files fast. The functions are using .Net BinaryWriter methods. The quick .CopyTo() method is used to join files. For details see the script version web page: [Powershell functions to split and join binary files fast](https://gallery.technet.microsoft.com/Powershell-functions-to-cb6bb05a).
+### Export-FileSegment and Import-FileSegment
+Two Powershell functions to extract and insert binary data from and to files. The functions are using .Net BinaryWriter and BinaryReader methods. For details see the script version web page: [Export-Filesegment](https://github.com/MScholtes/TechNet-Gallery/tree/master/Export-Filesegment).
 ### Get-Sessions
 Powershell function to get information about interactive logins (including RDP sessions) including logon, connect, disconnect and logoff times. Session ID and remote host for RDP can be requested per parameter. For details see the script version web page: [Get-Sessions: Powershell script for information on interactive logins (incl RDP)](https://gallery.technet.microsoft.com/Get-Sessions-Powershell-1dcf779d).
 ### ConvertTo-Batch
@@ -40,11 +43,14 @@ Starts an administrative "File Open" dialog as a replacement for an elevated Win
 Checks if the current Powershell runs in administrative mode (means is elevated if UAC is enabled). For details see the script version web page: ["File Open" Dialog As Replacement for An Adminstrative Windows Explorer](https://gallery.technet.microsoft.com/scriptcenter/File-Open-Dialog-As-51b7854b).
 ### Get-RebootTime
 Function to retrieve the latest reboot time(s) of a computer. For details see the script version web page: [Retrieve latest reboot time(s)](https://gallery.technet.microsoft.com/Retrieve-latest-reboot-97ab5270).
+
 ## Versions
+### 1.1.3, 2020-08-22
+Added Export-FileSegment and Import-FileSegment
 ### 1.1.2, 2020-05-03
 Split-File can chunk into parts of size > 2GB now
 ### 1.1.1, 2020-02-15
-Added filtering options to Export-FirewallRules.ps1
+Added filtering options to Export-FirewallRules
 ### 1.1.0, 2019-08-30
 Renamed Set-InFile to Replace-InFile
 
