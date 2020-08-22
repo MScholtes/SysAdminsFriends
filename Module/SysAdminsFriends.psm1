@@ -2,8 +2,8 @@
 .SYNOPSIS
 The module SysAdminsFriends provides some tools that are useful for system administrators.
 .NOTES
-Version: 1.1.2
-Date: 2020-05-03
+Version: 1.1.3
+Date: 2020-08-22
 Author: Markus Scholtes
 #>
 
@@ -33,6 +33,8 @@ if (Get-Command Test-FileCatalog -EA SilentlyContinue)
 . "$PSScriptRoot/functions/Remove-FirewallRules.ps1"
 . "$PSScriptRoot/functions/Replace-InFile.ps1"
 . "$PSScriptRoot/functions/Split-File.ps1"
+. "$PSScriptRoot/functions/Export-FileSegment.ps1"
+. "$PSScriptRoot/functions/Import-FileSegment.ps1"
 . "$PSScriptRoot/functions/Start-WebServer.ps1"
 
 # Export functions
@@ -47,6 +49,8 @@ Export-ModuleMember -Function @(
 	'Replace-InFile',
 	'Split-File',
 	'Join-File',
+	'Export-FileSegment',
+	'Import-FileSegment',
 	'Invoke-AdminExplorer',
 	'Test-Admin',
 	'Select-FileDialog',
