@@ -8,10 +8,14 @@ be separated with semicolons. Existing rules with same display name will be over
 Input file
 .PARAMETER JSON
 Input in JSON instead of CSV format
+.PARAMETER PolicyStore
+Store to which the rules are written (default: PersistentStore).
+Allowed values are PersistentStore, ActiveStore (the resultant rule set of all sources), localhost,
+a computer name, <domain.fqdn.com>\<GPO_Friendly_Name> and others depending on the environment.
 .NOTES
 Author: Markus Scholtes
-Version: 1.02
-Build date: 2020/02/15
+Version: 1.1.0
+Build date: 2020/12/12
 .EXAMPLE
 Import-FirewallRules
 Imports all firewall rules in the CSV file FirewallRules.csv in the current directory.
@@ -21,7 +25,7 @@ Imports all firewall rules in the JSON file WmiRules.json.
 #>
 function Import-FirewallRules
 {
-	Param($CSVFile = ".\FirewallRules.csv", [SWITCH]$JSON)
+	Param($CSVFile = "", [SWITCH]$JSON, [STRING]$PolicyStore = "PersistentStore")
 
 	#Requires -Version 4.0
 
@@ -53,10 +57,12 @@ function Import-FirewallRules
 
 	if (!$JSON)
 	{ # read CSV file
+		if ([STRING]::IsNullOrEmpty($CSVFile)) { $CSVFile = ".\FirewallRules.csv" }
 		$FirewallRules = Get-Content $CSVFile | ConvertFrom-CSV -Delimiter ";"
 	}
 	else
 	{ # read JSON file
+		if ([STRING]::IsNullOrEmpty($CSVFile)) { $CSVFile = ".\FirewallRules.json" }
 		$FirewallRules = Get-Content $CSVFile | ConvertFrom-JSON
 	}
 
@@ -101,9 +107,9 @@ function Import-FirewallRules
 
 		Write-Output "Generating firewall rule `"$($Rule.DisplayName)`" ($($Rule.Name))"
 		# remove rule if present
-		Get-NetFirewallRule -EA SilentlyContinue -Name $Rule.Name | Remove-NetFirewallRule
+		Get-NetFirewallRule -EA SilentlyContinue -PolicyStore $PolicyStore -Name $Rule.Name | Remove-NetFirewallRule
 
 		# generate new firewall rule, parameter are assigned with splatting
-		New-NetFirewallRule -EA Continue @RuleSplatHash
+		New-NetFirewallRule -EA Continue -PolicyStore $PolicyStore @RuleSplatHash
 	}
 }

@@ -12,6 +12,10 @@ Display name of the rules to be processed. Wildcard character * is allowed.
 Output file
 .PARAMETER JSON
 Output in JSON instead of CSV format
+.PARAMETER PolicyStore
+Store from which the rules are retrieved (default: ActiveStore).
+Allowed values are PersistentStore, ActiveStore (the resultant rule set of all sources), localhost,
+a computer name, <domain.fqdn.com>\<GPO_Friendly_Name>, RSOP and others depending on the environment.
 .PARAMETER Inbound
 Export inbound rules
 .PARAMETER Outbound
@@ -26,8 +30,8 @@ Export allowing rules
 Export blocking rules
 .NOTES
 Author: Markus Scholtes
-Version: 1.02
-Build date: 2020/02/15
+Version: 1.1.0
+Build date: 2020/12/12
 .EXAMPLE
 Export-FirewallRules
 Exports all firewall rules to the CSV file FirewallRules.csv in the current directory.
@@ -40,7 +44,7 @@ Exports all SNMP firewall rules to the JSON file SNMPRules.json.
 #>
 function Export-FirewallRules
 {
-	Param($Name = "*", $CSVFile = ".\FirewallRules.csv", [SWITCH]$JSON, [SWITCH]$Inbound, [SWITCH]$Outbound, [SWITCH]$Enabled, [SWITCH]$Disabled, [SWITCH]$Block, [SWITCH]$Allow)
+	Param($Name = "*", $CSVFile = "", [SWITCH]$JSON, [STRING]$PolicyStore = "ActiveStore", [SWITCH]$Inbound, [SWITCH]$Outbound, [SWITCH]$Enabled, [SWITCH]$Disabled, [SWITCH]$Block, [SWITCH]$Allow)
 
 	#Requires -Version 4.0
 
@@ -81,12 +85,12 @@ function Export-FirewallRules
 
 
 	# read firewall rules
-	$FirewallRules = Get-NetFirewallRule -DisplayName $Name -PolicyStore "ActiveStore" | Where-Object { $_.Direction -like $Direction -and $_.Enabled -like $RuleState -And $_.Action -like $Action }
+	$FirewallRules = Get-NetFirewallRule -DisplayName $Name -PolicyStore $PolicyStore | Where-Object { $_.Direction -like $Direction -and $_.Enabled -like $RuleState -And $_.Action -like $Action }
 
 	# start array of rules
 	$FirewallRuleSet = @()
 	ForEach ($Rule In $FirewallRules)
-	{ # iterate throug rules
+	{ # iterate through rules
 		Write-Output "Processing rule `"$($Rule.DisplayName)`" ($($Rule.Name))"
 
 		# Retrieve addresses,
@@ -145,10 +149,12 @@ function Export-FirewallRules
 
 	if (!$JSON)
 	{ # output rules in CSV format
+		if ([STRING]::IsNullOrEmpty($CSVFile)) { $CSVFile = ".\FirewallRules.csv" }
 		$FirewallRuleSet | ConvertTo-CSV -NoTypeInformation -Delimiter ";" | Set-Content $CSVFile
 	}
 	else
 	{ # output rules in JSON format
+		if ([STRING]::IsNullOrEmpty($CSVFile)) { $CSVFile = ".\FirewallRules.json" }
 		$FirewallRuleSet | ConvertTo-JSON | Set-Content $CSVFile
 	}
 }
