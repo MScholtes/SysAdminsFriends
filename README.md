@@ -45,6 +45,8 @@ Checks if the current Powershell runs in administrative mode (means is elevated 
 Function to retrieve the latest reboot time(s) of a computer. For details see the script version web page: [Retrieve latest reboot time(s)](https://gallery.technet.microsoft.com/Retrieve-latest-reboot-97ab5270).
 
 ## Versions
+### 1.1.4, 2020-12-12
+New parameter -Policystore for Export-FirewallRules, Import-FirewallRules and Remove-FirewallRules
 ### 1.1.3, 2020-08-22
 Added Export-FileSegment and Import-FileSegment
 ### 1.1.2, 2020-05-03
